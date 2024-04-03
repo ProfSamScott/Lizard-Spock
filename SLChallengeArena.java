@@ -1,6 +1,6 @@
+package lizardSpock;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,44 +18,47 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import players.CopyCat;
+import players.SLPlayer;
+
 /**
- * Implements a rock-scissors-paper human challenge arena. Created November 4,
- * 2007 <APPLET code="SLArena.java" HEIGHT = 300 WIDTH = 600></APPLET>
+ * Implements a rock-scissors-paper human challenge arena. Use this for debugging purposes.
+ * Note that this is a sublcass of SLArena and only overrides the methods and fields it
+ * absolutely needs to - for example, debugging constants are still in SLChallengeArena
  *
  * @author Sam Scott
+ * @version <br>1.0 (November 4, 2007) Initial release as Rock Paper Scissors
+ * @version <br>2.0 (March, 2011) Released as Spock-Lizard
+ * @version <br>2.1 (August 10, 2011) Converted to an application
  */
 public class SLChallengeArena extends SLArena implements Runnable {
-	public final boolean SOUND_TEST = false;
 
+	// METHODS YOU SHOULD CHANGE
 	/**
-	 *
+	 * Sets up the arena - change the player name to your class.
 	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Sound for a human win
-	 */
-	AudioClip humanWin;
-
 	public SLChallengeArena() {
-		super(false);
-		init();
-	}
-	/**
-	 * Calls makeGUI() to create a new JPanel, then calls setContentPane to put
-	 * the JPanel in place on the JApplet
-	 */
-	public void init() {
-		player1 = new Thinker(this); // ROBOT PLAYER
-		humanWin = Applet.newAudioClip(SLArena.class.getResource("../sounds/bluhaha.wav"));
-		//humanWin = getAudioClip(getCodeBase(), "sounds/bluhaha.wav");
-		fanfare2 = Applet.newAudioClip(SLArena.class.getResource("../sounds/fanfare2.wav"));
-	//fanfare2 = getAudioClip(getCodeBase(), "sounds/fanfare2.wav");
-		click = Applet.newAudioClip(SLArena.class.getResource("../sounds/click_x.wav"));
-	//click = getAudioClip(getCodeBase(), "sounds/click_x.wav");
+		player1 = new CopyCat(this); // ROBOT PLAYER
+		URL location = getClass().getClassLoader().getResource("sounds/bigbang1.wav");
+		fanfare2 = Applet.newAudioClip(location);
+		location = getClass().getClassLoader().getResource("sounds/click_x.wav");
+		click = Applet.newAudioClip(location);
 		JPanel mainPanel = makeGUI();
 		setContentPane(mainPanel);
-	} // init method
+	}
+
+	// METHODS YOU SHOULD NOT CHANGE
+	/**
+	 * Main method to create and display the arena
+	 * @param args unused
+	 */
+	public static void main(String[] args)
+	{
+		JFrame frame = new SLChallengeArena();
+		frame.pack();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
 
 	/**
 	 * Listener for the rock, scissors, and paper buttons
@@ -63,8 +67,8 @@ public class SLChallengeArena extends SLArena implements Runnable {
 		int p2move;
 
 		/**
-		 * @param move
-		 *            Which button this will be (rock, paper, or scissors)
+		 * Constructor.
+		 * @param move Which button this will be (rock, paper, or scissors)
 		 */
 		public HumanButtonListener(int move) {
 			this.p2move = move;
@@ -138,8 +142,6 @@ public class SLChallengeArena extends SLArena implements Runnable {
 	 */
 	protected JPanel makeGUI() {
 		Image backgroundImage = Toolkit.getDefaultToolkit ().getImage (getClass().getClassLoader().getResource("images/spockLizard2.jpg"));
-		//Image backgroundImage = getImage(getCodeBase(),
-		//		"images/spockLizard2.jpg");
 		ImagePanel newPanel = new ImagePanel(backgroundImage, this);
 
 		// HEADING: headingPanel components
@@ -275,10 +277,5 @@ public class SLChallengeArena extends SLArena implements Runnable {
 
 		return newPanel;
 	}
-	public static void main(String[] args) {
-		JFrame frame = new SLChallengeArena();
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+
 }
