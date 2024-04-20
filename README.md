@@ -3,3 +3,6 @@ Implements a Rock Paper Scissors Lizard Spock game for Grade 12 students. Create
 
 ## Documentation
 https://profsamscott.github.io/Lizard-Spock/
+
+## Presentations
+This work was presented at CEMC 2011 (University of Waterloo) and ACSE 2015 in Toronto
